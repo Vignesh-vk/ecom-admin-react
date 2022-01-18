@@ -156,8 +156,6 @@ class listFaqs extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
                     <div class="table">
                         <table class="table">
                             <thead>
@@ -174,6 +172,8 @@ class listFaqs extends React.Component {
                                 {resultArray}
                             </tbody>
                         </table>
+                        </div>
+                        </div>
                     </div>
                 </div>
             </>

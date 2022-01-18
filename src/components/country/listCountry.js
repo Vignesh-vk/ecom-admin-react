@@ -146,9 +146,6 @@ class listCountry extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
                 <div class="table">
                     <table class="table">
                         <thead>
@@ -165,6 +162,8 @@ class listCountry extends React.Component {
                             {resultArray}
                         </tbody>
                     </table>
+                </div>
+                </div>
                 </div>
                 </div>
             </>

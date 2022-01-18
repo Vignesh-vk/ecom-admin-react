@@ -142,8 +142,7 @@ class listPages extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                    
                     <div class="table">
                         <table class="table">
                             <thead>
@@ -160,6 +159,8 @@ class listPages extends React.Component {
                             </tbody>
                         </table>
                     </div>
+                </div>
+                </div>
                 </div>
             </>
         );
