@@ -29,23 +29,23 @@ class viewPage extends React.Component {
         const status = this.props.pageReducer.pageInfo.status;
         const id = this.props.pageReducer.pageInfo.id;
         let formData = {
-            title : title,
-            description : description,
-            status : status,
-            id : id
+            title: title,
+            description: description,
+            status: status,
+            id: id
         }
-        console.log("-=-formData=-=-",formData);
+        console.log("-=-formData=-=-", formData);
         this.props.AC_ADD_PAGE(formData);
     }
 
     handleInputChange(event) {
         let name = event.target.id;
         let value = event.target.value;
-        this.props.AC_HANDLE_INPUT_CHANGE(name,value);
+        this.props.AC_HANDLE_INPUT_CHANGE(name, value);
     }
     componentWillMount() {
         let pageId = this.props.match.params.id;
-        let formData = {id:pageId}
+        let formData = { id: pageId }
         this.props.AC_VIEW_PAGE(formData);
     }
 
@@ -64,26 +64,26 @@ class viewPage extends React.Component {
                                 <form className="forms-sample" id="editPage">
                                     <div className="form-group">
                                         <label for="exampleInputUsername1">Title</label>
-                                        <input type="text" autoComplete='off' placeholder="Title" id="Title" value={title} onChange={this.handleInputChange} style={{ borderColor: this.state.color0 }} className="form-control" disabled/>
+                                        <input type="text" autoComplete='off' placeholder="Title" id="Title" value={title} onChange={this.handleInputChange} style={{ borderColor: this.state.color0 }} className="form-control" disabled />
                                         {this.state.titleError ? <label className="mt-2" style={{ color: 'red' }}>Title is required</label> : ""}
                                         {this.state.titleCountError ? <label className="mt-2" style={{ color: 'red' }}>Title should be atleast 5 characters</label> : ""}
 
                                     </div>
                                     <div className="form-group">
                                         <label for="exampleInputUsername1">description</label>
-                                        <input type="text" autoComplete='off' placeholder="Description" id="description" value={description} onChange={this.handleInputChange} style={{ borderColor: this.state.color1 }} className="form-control" disabled/>
+                                        <input type="text" autoComplete='off' placeholder="Description" id="description" value={description} onChange={this.handleInputChange} style={{ borderColor: this.state.color1 }} className="form-control" disabled />
                                         {this.state.descriptionError ? <label className="mt-2" style={{ color: 'red' }}>Description is required</label> : ""}
                                         {this.state.descriptionCountError ? <label className="mt-2" style={{ color: 'red' }}>Description should be atleast 5 characters</label> : ""}
 
                                     </div>
-                                    <div className="form-group">
-                                        <label for="exampleInputUsername1">STATUS</label>
-                                        <select className="form-control" id="status" style={{ outline: this.state.color2 }} onChange={this.handleInputChange} disabled>
+                                    <div class="form-group">
+                                        <h4 style={{ fontSize: '0.875rem' }}>Status</h4>
+                                        <select class="form-control" id="status" value={status} style={{ outline: this.state.color2 }} onChange={this.handleInputChange}disabled >
                                             <option value="">Select Status</option>
                                             <option value="true" selected={status == true}>Active</option>
                                             <option value="false" selected={status == false}>Inactive</option>
                                         </select>
-                                        {this.state.statusError ? <label className="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
+                                        {this.state.statusError ? <label class="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
                                     </div>
                                     <button type="button" className="btn btn-gradient-primary me-2" style={{
                                         backgroundColor: 'blue',
@@ -105,6 +105,6 @@ function mapStateToProps(state) {
     }
 }
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ AC_LIST_PAGE, AC_ADD_PAGE, AC_VIEW_PAGE,AC_HANDLE_INPUT_CHANGE }, dispatch)
+    return bindActionCreators({ AC_LIST_PAGE, AC_ADD_PAGE, AC_VIEW_PAGE, AC_HANDLE_INPUT_CHANGE }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(viewPage)

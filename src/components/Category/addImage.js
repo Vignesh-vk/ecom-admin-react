@@ -70,10 +70,16 @@ class addImage extends React.Component {
             });
             this.setState({ category: '', filedata: '', status: '' });
         }
+        var tempVal;
+      if (status == 'Active') {
+        tempVal = true
+      } else {
+        tempVal = false
+      }
         var formdata = new FormData();
         formdata.append("category", category);
         formdata.append('image', filedata);
-        formdata.append("status", status);
+        formdata.append("status", tempVal);
         this.props.AC_LIST_IMAGES();
         this.props.AC_ADD_IMAGE(formdata);
         this.props.AC_LIST_IMAGES();

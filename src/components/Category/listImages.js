@@ -74,24 +74,33 @@ class listImages extends React.Component {
             return <Redirect to={'/editImage'+'/'+this.state.editId} />
         }
         var datalist = this.props.imagesReducer.listImages;
-        console.log("----datalist--", datalist);
         var activecount = 0;
         var inactivecount = 0;
-        var totalcount = datalist.length;
+        var totalcount = 0;
+        if(datalist){
+            activecount=0;
+            inactivecount=0;
+            totalcount=datalist.length;
+        }
         var resultArray = [];
-        if (datalist) {
+            if(datalist==0){
+                resultArray.push(<label>No data found</label>)
+            }
+            else{
             for (var i = 0; i < datalist.length; i++) {
-                if (datalist[i].status == "Active") {
+                var tempVal = "";
+                if (datalist[i].status) {
+                    tempVal = "Active";
                     activecount++;
-                }
-                else {
+                } else {
+                    tempVal = "Inactive"
                     inactivecount++;
                 }
                 resultArray.push(<tr key={i} >
                     <td>{i + 1}</td>
                     <td>{datalist[i].category}</td>
                     <td ><img className='="img-thumbnail' src={"http://localhost:8000/uploads/" + datalist[i].filename}></img></td>
-                    <td>{datalist[i].status}</td>
+                    <td>{tempVal}</td>
                     <td>
                         <button type="button" id={datalist[i]._id} onClick={this.viewImage} class="btn btn-success">View</button>
                         <button type="button" id={datalist[i]._id} onClick={this.editImage} class="btn btn-success">Edit</button>
@@ -100,7 +109,6 @@ class listImages extends React.Component {
                 </tr>)
             }
         }
-
         return (
             <>
                 <div class="main-panel" >

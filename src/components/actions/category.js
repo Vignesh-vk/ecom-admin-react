@@ -5,8 +5,6 @@ const DELETE_IMAGE = "DELETE_IMAGE";
 const VIEW_IMAGE = "VIEW_IMAGE";
 const EDIT_IMAGE="EDIT_IMAGE";
 const UPDATE_IMAGE_DATA = "UPDATE_IMAGE_DATA";
-
-
 export function AC_ADD_IMAGE(formdata) {
     return function (dispatch) {
         axios.post("http://localhost:8000/api/v1/category/addUpdateImage", formdata)

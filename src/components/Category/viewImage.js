@@ -34,6 +34,7 @@ class viewImage extends React.Component {
 
         return (
             <div className="container-fluid">
+                <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Edit Page</h3>
                 <div className="row">
                     <div className="col-md-6 grid-margin stretch-card">
                         <div className="card">
@@ -51,7 +52,7 @@ class viewImage extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <label for="exampleInputUsername1">STATUS</label>
-                                        <select className="form-control" id="status" value={status} style={{ backgroundColor: 'white' }} disabled>
+                                        <select className="form-control" id="status"  style={{ backgroundColor: 'white' }} disabled>
                                             <option value="Status">Select Status</option>
                                             <option value="active" selected={status == true} >Active</option>
                                             <option value="inactive" selected={status == false}>Inactive</option>

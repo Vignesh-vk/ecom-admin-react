@@ -3,18 +3,18 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { AC_LIST_COUNTRY, AC_DELETE_COUNTRY } from '../actions/country';
 import swal from 'sweetalert';
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 class listCountry extends React.Component {
     constructor(props) {
         super(props);
-        this.state={
-            countryId:'',
-            editStatus:false,
-            editId:''
+        this.state = {
+            countryId: '',
+            editStatus: false,
+            editId: ''
         }
         this.delete = this.delete.bind(this);
-        this.editCountry=this.editCountry.bind(this);
-        this.viewCountry=this.viewCountry.bind(this);
+        this.editCountry = this.editCountry.bind(this);
+        this.viewCountry = this.viewCountry.bind(this);
     }
     delete(event) {
         var countryId = event.target.id;
@@ -39,34 +39,34 @@ class listCountry extends React.Component {
         this.props.AC_DELETE_COUNTRY(formData);
         this.props.AC_LIST_COUNTRY();
     }
-    editCountry(event){
-        let countryId=event.target.id;
-        this.setState({editStatus:true,editId:countryId})
+    editCountry(event) {
+        let countryId = event.target.id;
+        this.setState({ editStatus: true, editId: countryId })
     }
-    viewCountry(event){
-        let countryId=event.target.id;
-        this.setState({viewStatus:true,viewId:countryId})
+    viewCountry(event) {
+        let countryId = event.target.id;
+        this.setState({ viewStatus: true, viewId: countryId })
     }
     componentDidMount() {
         this.props.AC_LIST_COUNTRY();
     }
 
     render() {
-        if(this.state.editStatus){
-            return <Redirect to={"/editCountry/"+this.state.editId}/>
+        if (this.state.editStatus) {
+            return <Redirect to={"/editCountry/" + this.state.editId} />
         }
         else if (this.state.viewStatus) {
             return <Redirect to={"/viewCountry/" + this.state.viewId} />
         }
-    var TotalCountry=0;
-    var Active=0;
-    var Inactive=0;
-    var countryList=this.props.countryReducer.countryList;
-    if(countryList){
-      Active=0;
-      TotalCountry=countryList.length;
-      Inactive=0;
-    }
+        var TotalCountry = 0;
+        var Active = 0;
+        var Inactive = 0;
+        var countryList = this.props.countryReducer.countryList;
+        if (countryList) {
+            Active = 0;
+            TotalCountry = countryList.length;
+            Inactive = 0;
+        }
         var Country = this.props.countryReducer.countryList;
         console.log("=-=-=-table=", Country)
         var resultArray = [];
@@ -75,13 +75,12 @@ class listCountry extends React.Component {
         }
         else {
             for (var i = 0; i < Country.length; i++) {
-                var tempVal="";
-                if (Country[i].status)
-                {
-                    tempVal= "Active";
+                var tempVal = "";
+                if (Country[i].status) {
+                    tempVal = "Active";
                     Active++;
-                }else{
-                    tempVal="Inactive"
+                } else {
+                    tempVal = "Inactive"
                     Inactive++;
                 }
                 resultArray.push(<tr key={i} >
@@ -146,25 +145,25 @@ class listCountry extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                <div class="table">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">S.No</th>
-                                <th scope="col"> Name</th>
-                                <th scope="col">Code</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                            <div class="table">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col"> Name</th>
+                                            <th scope="col">Code</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                            {resultArray}
-                        </tbody>
-                    </table>
-                </div>
-                </div>
-                </div>
+                                        {resultArray}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </>
 

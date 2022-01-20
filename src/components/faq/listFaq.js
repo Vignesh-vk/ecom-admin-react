@@ -21,7 +21,7 @@ class listFaqs extends React.Component {
             editFaq: false,
             editStatus: false,
             editId: '',
-            viewId:''
+            viewId: ''
         }
         this.delete = this.delete.bind(this);
         this.editFaq = this.editFaq.bind(this);
@@ -81,7 +81,7 @@ class listFaqs extends React.Component {
         console.log("=-=-=-table=", Faq)
         var resultArray = [];
         if (Faq == 0) {
-            resultArray.push(<label>Data is Not Found</label>)
+            resultArray.push(<label>No data found</label>)
         }
         else {
             for (var i = 0; i < Faq.length; i++) {
@@ -156,23 +156,23 @@ class listFaqs extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                    <div class="table">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">S.No</th>
-                                    <th scope="col"> Questions</th>
-                                    <th scope="col">Answers</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                            <div class="table">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col"> Questions</th>
+                                            <th scope="col">Answers</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                {resultArray}
-                            </tbody>
-                        </table>
-                        </div>
+                                        {resultArray}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,6 @@ const intialState = {
         filename: '',
         status: '',
         id: ''
-
     }
 }
 function imagesReducer(state = intialState, action) {
