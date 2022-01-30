@@ -1,10 +1,9 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { AC_LIST_COUNTRY, AC_ADD_COUNTRY, AC_VIEW_COUNTRY, AC_HANDLE_INPUT_CHANGE } from '../actions/country';
-import { Redirect } from 'react-router-dom';
+import { AC_LIST_CURRENCY, AC_ADD_CURRENCY, AC_VIEW_CURRENCY, AC_HANDLE_INPUT_CHANGE } from '../actions/currency';
 // import swal from 'sweetalert';
-class viewCountry extends React.Component {
+class viewCurrency extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,18 +15,16 @@ class viewCountry extends React.Component {
             nameCountError: false,
             status: '',
             statusError: false,
-            editStatus:false
         }
         this.validation = this.validation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.back=this.back.bind(this)
     }
 
     validation() {
-        const name = this.props.countryReducer.countryInfo.name;
-        const code = this.props.countryReducer.countryInfo.code;
-        const status = this.props.countryReducer.countryInfo.status;
-        const id = this.props.countryReducer.countryInfo.id;
+        const name = this.props.currencyReducer.currencyInfo.name;
+        const code = this.props.currencyReducer.currencyInfo.code;
+        const status = this.props.currencyReducer.currencyInfo.status;
+        const id = this.props.currencyReducer.currencyInfo.id;
         let formData = {
             name : name,
             code : code,
@@ -35,7 +32,7 @@ class viewCountry extends React.Component {
             id : id
         }
         console.log("-=-formData=-=-",formData);
-        this.props.AC_ADD_COUNTRY(formData);
+        this.props.AC_ADD_CURRENCY(formData);
     }
 
     handleInputChange(event) {
@@ -44,23 +41,19 @@ class viewCountry extends React.Component {
         this.props.AC_HANDLE_INPUT_CHANGE(name,value);
     }
     componentWillMount() {
-        let countryId = this.props.match.params.id;
-        let formData = {id:countryId}
-        this.props.AC_VIEW_COUNTRY(formData);
+        let currencyId = this.props.match.params.id;
+        let formData = {id:currencyId}
+        this.props.AC_VIEW_CURRENCY(formData);
     }
-    back(){
-        this.setState({ editStatus: true })
-      }
+
+
     render() {
-        if (this.state.editStatus) {
-            return <Redirect to='/listCountry' />
-          }
-        const name = this.props.countryReducer.countryInfo.name;
-        const code = this.props.countryReducer.countryInfo.code;
-        const status = this.props.countryReducer.countryInfo.status;
+        const name = this.props.currencyReducer.currencyInfo.name;
+        const code = this.props.currencyReducer.currencyInfo.code;
+        const status = this.props.currencyReducer.currencyInfo.status;
         return (
             <div className="container-fluid">
-            <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>View Country</h3>
+                <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>View Currency</h3>
                 <div className="row">
                     <div className="col-md-6 grid-margin stretch-card">
                         <div className="card">
@@ -81,7 +74,7 @@ class viewCountry extends React.Component {
 
                                     </div>
                                     <div className="form-group">
-                                        <label for="exampleInputUsername1">STATUS</label>
+                                        <label for="exampleInputUsername1">Status</label>
                                         <select className="form-control" id="status" style={{ outline: this.state.color2 }} onChange={this.handleInputChange} disabled>
                                             <option value="">Select Status</option>
                                             <option value="true" selected={status == true}>Active</option>
@@ -91,9 +84,8 @@ class viewCountry extends React.Component {
                                     </div>
                                     <button type="button" className="btn btn-gradient-primary me-2" style={{
                                         backgroundColor: 'blue',
-                                        color: 'white',
-                                        borderRadius:'2rem'
-                                    }} onClick={this.back}>Back</button>
+                                        color: 'white'
+                                    }} onClick={this.validation}>Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -106,10 +98,10 @@ class viewCountry extends React.Component {
 function mapStateToProps(state) {
     console.log('map state =====================', state);
     return {
-        countryReducer: state.COUNTRY_Reducer
+        currencyReducer: state.CURRENCY_Reducer
     }
 }
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ AC_LIST_COUNTRY, AC_ADD_COUNTRY, AC_VIEW_COUNTRY,AC_HANDLE_INPUT_CHANGE }, dispatch)
+    return bindActionCreators({ AC_LIST_CURRENCY, AC_ADD_CURRENCY, AC_VIEW_CURRENCY, AC_HANDLE_INPUT_CHANGE  }, dispatch)
 }
-export default connect(mapStateToProps, mapDispatchToProps)(viewCountry);
+export default connect(mapStateToProps, mapDispatchToProps)(viewCurrency);

@@ -1,18 +1,16 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { AC_LIST_COUNTRY } from '../actions/country';
-import { AC_ADD_COUNTRY } from '../actions/country';
+import { AC_LIST_PAYMENT } from '../actions/payment';
+import { AC_ADD_PAYMENT } from '../actions/payment';
 import { Redirect } from 'react-router-dom';
 import swal from 'sweetalert';
 
-class addCountry extends React.Component {
+class addPayment extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: '',
-      codeError: false,
-      codeCountError: false,
+      mode: '',
       name: '',
       nameError: false,
       nameCountError: false,
@@ -26,9 +24,8 @@ class addCountry extends React.Component {
   }
 
   validation() {
-    var nameauth;
     const name = this.state.name;
-    const code = this.state.code;
+    const mode = this.state.mode;
     const status = this.state.status
     if (name) {
       if (name.length < 1) {
@@ -41,17 +38,12 @@ class addCountry extends React.Component {
     else {
       this.setState({ nameError: true, nameCountError: false })
     }
-
-    if (code) {
-      if (code.length < 1) {
-        this.setState({ codeError: false, codeCountError: true })
-      }
-      else {
-        this.setState({ codeError: false, codeCountError: false })
-      }
+    
+    if (mode) {
+      this.setState({ modeError: false })
     }
     else {
-      this.setState({ codeError: true, codeCountError: false })
+      this.setState({ modeError: true })
     }
 
     if (status) {
@@ -60,26 +52,27 @@ class addCountry extends React.Component {
     else {
       this.setState({ statusError: true })
     }
-    if (name && code && status) {
+    
+    if (name && status) {
+      swal("Payment Added Successfully!", {
+        buttons: false,
+        timer: 2000,
+      });
+      this.setState({ name: '', mode: '', status: '' });
+
       var tempVal;
       if (status == 'Active') {
         tempVal = true
       } else {
         tempVal = false
       }
-      // document.getElementById('addCountry').reset();
-      swal("Country Added Successfully!", {
-        buttons: false,
-        timer: 2000,
-      });
-      this.setState({ name: '', code: '', status: '' });
+  
       const userData = {
         name: name,
-        code: code,
+        mode:mode,
         status: tempVal
       }
-      this.props.AC_ADD_COUNTRY(userData);
-      console.log('========Add COUNTRY========', userData)
+      this.props.AC_ADD_PAYMENT(userData);
     }
   }
   back() {
@@ -88,11 +81,10 @@ class addCountry extends React.Component {
   handleInputChange(event) {
     const nameid = event.target.id;
     const namevalue = event.target.value;
-    const codeid = event.target.id;
-    const codevalue = event.target.value;
+    const modeid = event.target.id;
+    const modevalue = event.target.value;
     const statusid = event.target.id;
     const statusvalue = event.target.value;
-
     if (nameid == "name") {
       this.setState({ name: namevalue })
       if (namevalue) {
@@ -108,18 +100,13 @@ class addCountry extends React.Component {
       }
     }
 
-    if (codeid == "code") {
-      this.setState({ code: codevalue })
-      if (codevalue) {
-        if (codevalue.length < 2) {
-          this.setState({ codeError: false, codeCountError: true })
-        }
-        else {
-          this.setState({ codeError: false, codeCountError: false })
-        }
+    if (modeid == "mode") {
+      this.setState({ mode: modevalue })
+      if (modevalue) {
+        this.setState({ modeError: false })
       }
       else {
-        this.setState({ codeError: true, codeCountError: false })
+        this.setState({ modeError: true })
       }
     }
 
@@ -135,32 +122,36 @@ class addCountry extends React.Component {
   }
   render() {
     if (this.state.editStatus) {
-      return <Redirect to='/listCountry' />
+      return <Redirect to='/listPayment' />
     }
     return (
       <div class="container-fluid pages" style={{ width: '600px', marginRight: '611px' }}>
-        <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add Country</h3>
+        <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add Payment</h3>
         <div class="col-12 grid-margin stretch-card">
           <div class="card" >
             <div class="card-body">
               <form class="forms-sample">
                 <div class="form-group">
-                  <h5 style={{ fontSize: '0.875rem' }}>Country</h5>
-                  <input type="text" placeholder="Country" id="name" value={this.state.name} onChange={this.handleInputChange} class="form-control" ></input>
+                  <h5 style={{ fontSize: '0.875rem' }}>Name</h5>
+                  <input type="text" placeholder="name" id="name" value={this.state.name} onChange={this.handleInputChange} class="form-control" ></input>
                   {this.state.nameError ? <label class="mt-2" style={{ color: 'red' }}>Name is required</label> : ""}
+                </div>
 
-                </div>
                 <div class="form-group">
-                  <h4 style={{ fontSize: '0.875rem' }}>Code</h4>
-                  <input type="text" placeholder="Code" id="code" value={this.state.code} onChange={this.handleInputChange} class="form-control" ></input>
-                  {this.state.codeError ? <label class="mt-2" style={{ color: 'red' }}>Code is required</label> : ""}
+                  <label>
+                    Mode:</label>
+                    <div>
+                      <input onChange={this.handleInputChange} type="radio" value="Sandbox" id="mode" name="mode"/>Sandbox
+                      <input onChange={this.handleInputChange} type="radio" value="Live" id="mode" name="mode"/>Live
+                    </div>
                 </div>
+
                 <div class="form-group">
                   <h4 style={{ fontSize: '0.875rem' }}>Status</h4>
                   <select class="form-control" id="status" onChange={this.handleInputChange} >
                     <option selected>Select status</option>
-                    <option value="true" >Active</option>
-                    <option value="false" >Inactive</option>
+                    <option value="Active" >Active</option>
+                    <option value="Inactive" >Inactive</option>
                   </select>
                   {this.state.statusError ? <label class="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
                 </div>
@@ -175,12 +166,11 @@ class addCountry extends React.Component {
   }
 }
 function mapStateToProps(state) {
-  console.log('map state', state);
   return {
-    countryReducer: state.COUNTRY_Reducer
+    paymentReducer: state.PAYMENT_Reducer
   }
 }
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ AC_LIST_COUNTRY, AC_ADD_COUNTRY }, dispatch)
+  return bindActionCreators({ AC_LIST_PAYMENT, AC_ADD_PAYMENT }, dispatch)
 }
-export default connect(mapStateToProps, mapDispatchToProps)(addCountry);
+export default connect(mapStateToProps, mapDispatchToProps)(addPayment);

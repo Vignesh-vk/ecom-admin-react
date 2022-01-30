@@ -26,11 +26,17 @@ class listPages extends React.Component {
             buttons: true,
             dangerMode: true,
         })
-            .then((willDelete) => {
-                if (willDelete) {
-                    this.deletePage(pageId);
-                }
-            });
+        .then((willDelete) => {
+            if (willDelete) {
+                this.deletePage(pageId);
+                swal("Page Deleted Successfully!", {
+                    buttons: false,
+                    icon: "success",
+                })
+            } else {
+                swal('Page not deleted!',);
+            }
+        });
     }
     deletePage(pageId) {
         var formData = {
@@ -62,6 +68,7 @@ class listPages extends React.Component {
         var Active = 0;
         var Inactive = 0;
         var PageList = this.props.PageReducer.pageList;
+        var description=this.props.PageReducer.pageList.description
         if (PageList) {
             Active = 0;
             TotalPage = PageList.length;
@@ -80,13 +87,13 @@ class listPages extends React.Component {
                     tempVal = "Inactive"
                     Inactive++;
                 }
-                resultArray.push(<tr key={i} >
+                resultArray.push(<tr key={[i]} >
                     <th scope="row">{i + 1}</th>
                     <td>{Page[i].title}</td>
-                    <td>{Parser(Page[i].description)}</td>
+                    <td>{Parser(Page[i].description.substring(0,20)+" ......")}</td>
                     <td>{tempVal}</td>
                     <td>
-                        <button type="button" id={Page[i]._id} onClick={this.viewPage} class="btn btn-success">View</button>
+                        <button type="button" id={Page[i]._id} onClick={this.viewPage} class="btn btn-primary">View</button>
                         <button type="button" id={Page[i]._id} onClick={this.editPage} class="btn btn-success">Edit</button>
                         <button type="button" id={Page[i]._id} onClick={this.delete} class="btn btn-danger">Delete</button>
                     </td>
@@ -143,12 +150,12 @@ class listPages extends React.Component {
                                 </div>
                             </div>
                     
-                    <div class="table">
-                        <table class="table">
+                    <div className="table" style={{ marginBottom: "275px" }}>
+                        <table className="table">
                             <thead>
                                 <tr>
                                     <th scope="col">S.No</th>
-                                    <th scope="col"> Questions</th>
+                                    <th scope="col">Questions</th>
                                     <th scope="col">Answers</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Actions</th>

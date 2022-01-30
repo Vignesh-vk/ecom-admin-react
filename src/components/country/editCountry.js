@@ -2,6 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { AC_LIST_COUNTRY, AC_ADD_COUNTRY, AC_VIEW_COUNTRY, AC_HANDLE_INPUT_CHANGE } from '../actions/country';
+import { Redirect } from 'react-router-dom';
 // import swal from 'sweetalert';
 class editCountry extends React.Component {
     constructor(props) {
@@ -15,9 +16,11 @@ class editCountry extends React.Component {
             nameCountError: false,
             status: '',
             statusError: false,
+            editStatus:false,
         }
         this.validation = this.validation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.back=this.back.bind(this);
     }
 
     validation() {
@@ -45,19 +48,23 @@ class editCountry extends React.Component {
         let formData = {id:countryId}
         this.props.AC_VIEW_COUNTRY(formData);
     }
-
-
+    back(){
+        this.setState({ editStatus: true })
+      }
     render() {
         const name = this.props.countryReducer.countryInfo.name;
         const code = this.props.countryReducer.countryInfo.code;
         const status = this.props.countryReducer.countryInfo.status;
+        if (this.state.editStatus) {
+            return <Redirect to='/listCountry' />
+          }
         return (
             <div className="container-fluid">
+                <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Edit Country</h3>
                 <div className="row">
                     <div className="col-md-6 grid-margin stretch-card">
                         <div className="card">
                             <div className="card-body">
-                                <h4 className="card-title">Edit country</h4>
                                 <form className="forms-sample" id="editFaq">
                                     <div className="form-group">
                                         <label for="exampleInputUsername1">Country</label>
@@ -74,7 +81,7 @@ class editCountry extends React.Component {
 
                                     </div>
                                     <div className="form-group">
-                                        <label for="exampleInputUsername1">STATUS</label>
+                                        <label for="exampleInputUsername1">Status</label>
                                         <select className="form-control" id="status" style={{ outline: this.state.color2 }} onChange={this.handleInputChange} >
                                             <option value="">Select Status</option>
                                             <option value="true" selected={status == true}>Active</option>
@@ -84,8 +91,14 @@ class editCountry extends React.Component {
                                     </div>
                                     <button type="button" className="btn btn-gradient-primary me-2" style={{
                                         backgroundColor: 'blue',
-                                        color: 'white'
+                                        color: 'white',
+                                        borderRadius:'2rem'
                                     }} onClick={this.validation}>Submit</button>
+                                    <button type="button" className="btn btn-gradient-primary me-2" style={{
+                                        backgroundColor: 'blue',
+                                        color: 'white',
+                                        borderRadius:'2rem'
+                                    }} onClick={this.back}>Cancel</button>
                                 </form>
                             </div>
                         </div>

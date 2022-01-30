@@ -25,11 +25,17 @@ class listCountry extends React.Component {
             buttons: true,
             dangerMode: true,
         })
-            .then((willDelete) => {
-                if (willDelete) {
-                    this.deleteCountry(countryId);
-                }
-            });
+        .then((willDelete) => {
+            if (willDelete) {
+                this.deleteCountry(countryId);
+                swal("Country Deleted Successfully!", {
+                    buttons: false,
+                    icon: "success",
+                })
+            } else {
+                swal('Country not deleted!',);
+            }
+        });
     }
     deleteCountry(countryId) {
         var formData = {

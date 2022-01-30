@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { AC_LIST_FAQ } from '../actions/faq';
 import { AC_ADD_FAQ } from '../actions/faq';
+import { Redirect } from 'react-router-dom';
+import swal from 'sweetalert';
 
 class addFaqs extends React.Component {
   constructor(props) {
@@ -16,63 +18,65 @@ class addFaqs extends React.Component {
       questionCountError: false,
       status: '',
       statusError: false,
+      editStatus: false,
     }
     this.validation = this.validation.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.back=this.back.bind(this);
+  }
+  back() {
+    this.setState({ editStatus: true })
   }
 
   validation() {
-    var questionauth;
-    var answerauth;
-    var statusauth;
     const question = this.state.question;
     const answer = this.state.answer;
     const status = this.state.status
     if (question) {
-      if (question.length < 5) {
-        questionauth = false
+      if (question.length < 1) {
         this.setState({ questionError: false, questionCountError: true })
       }
       else {
-        questionauth = true
         this.setState({ questionError: false, questionCountError: false })
       }
     }
     else {
-      questionauth = false
       this.setState({ questionError: true, questionCountError: false })
     }
 
     if (answer) {
-      if (answer.length < 5) {
-        answerauth = false
+      if (answer.length < 1) {
         this.setState({ answerError: false, answerCountError: true })
       }
       else {
-        answerauth = true
         this.setState({ answerError: false, answerCountError: false })
       }
     }
     else {
-      answerauth = false
       this.setState({ answerError: true, answerCountError: false })
     }
 
     if (status) {
-      statusauth = true
       this.setState({ statusError: false })
     }
     else {
-      statusauth = false
       this.setState({ statusError: true })
     }
-    if (questionauth && answerauth && statusauth) {
+    if (question && answer && status) {
       var tempVal;
       if (status == 'Active') {
         tempVal = true
       } else {
         tempVal = false
       }
+      // if (question && answer && status) {
+        // document.getElementById('addFaqs').reset();
+        swal("Faq Added Successfully!", {
+          buttons: false,
+          timer: 2000,
+        });
+        this.setState({ question: '', answer: '', status: '' });
+      // }
       const formData = {
         question: question,
         answer: answer,
@@ -131,8 +135,10 @@ class addFaqs extends React.Component {
     }
   }
 
-
   render() {
+    if (this.state.editStatus) {
+      return <Redirect to='/listFaq' />
+    }
     return (
       <div class="container-fluid pages" style={{ width: '600px', marginRight: '611px' }}>
         <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add FAQ</h3>
@@ -144,15 +150,11 @@ class addFaqs extends React.Component {
                   <h5 style={{ fontSize: '0.875rem' }}>Question</h5>
                   <input type="text" placeholder="Question" id="question" value={this.state.title} onChange={this.handleInputChange} class="form-control" ></input>
                   {this.state.questionError ? <label class="mt-2" style={{ color: 'red' }}>Question is required</label> : ""}
-                  {this.state.questionCountError ? <label class="mt-2" style={{ color: 'red' }}>Question should be atleast 5 characters</label> : ""}
-
                 </div>
                 <div class="form-group">
                   <h4 style={{ fontSize: '0.875rem' }}>Answer</h4>
                   <input type="text" placeholder="Answer" id="answer" value={this.state.answer} onChange={this.handleInputChange} class="form-control" ></input>
                   {this.state.answerError ? <label class="mt-2" style={{ color: 'red' }}>Answer is required</label> : ""}
-                  {this.state.answerCountError ? <label class="mt-2" style={{ color: 'red' }}>Answer should be atleast 5 characters</label> : ""}
-
                 </div>
                 <div class="form-group">
                   <h4 style={{ fontSize: '0.875rem' }}>STATUS</h4>
@@ -164,7 +166,7 @@ class addFaqs extends React.Component {
                   {this.state.statusError ? <label class="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
                 </div>
                 <button type="button" class="btn btn-gradient-primary me-2" style={{ backgroundColor: 'blue', color: 'white', borderRadius: '2rem' }} onClick={this.validation}>Submit</button>
-                <button type="button" class="btn btn-gradient-primary me-2" style={{ backgroundColor: 'blue', color: 'white', borderRadius: '2rem' }} onClick={this.validation}>Cancel</button>
+                <button type="button" class="btn btn-gradient-primary me-2" style={{ backgroundColor: 'blue', color: 'white', borderRadius: '2rem' }} onClick={this.back}>Cancel</button>
               </form>
             </div>
           </div>

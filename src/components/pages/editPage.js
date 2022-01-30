@@ -54,6 +54,7 @@ class editPage extends React.Component {
 
   validation() {
     const title = this.props.pagesReducer.pageInfo.title;
+    const status = this.props.pagesReducer.pageInfo.status
     // const description = this.props.page.viewPage.description;
     const id = this.props.pagesReducer.pageInfo.id;
     const description = this.state.description;
@@ -61,14 +62,19 @@ class editPage extends React.Component {
       title: title,
       description: description,
       id: id,
+      status: status
     }
     this.props.AC_ADD_PAGE(formData)
-    console.log("-=-=getting", formData)
   }
   inputchange(event) {
     let name = event.target.id;
     let value = event.target.value
-    this.props.AC_HANDLE_INPUT_CHANGE(name, value)
+    if(name=='status'){
+      let status =value == 'Active' ? true:false
+      this.props.AC_HANDLE_INPUT_CHANGE(name, status)
+    } else {
+      this.props.AC_HANDLE_INPUT_CHANGE(name, value)
+    }
 
   }
 
@@ -125,8 +131,8 @@ class editPage extends React.Component {
                     <h4 style={{ fontSize: '0.875rem' }}>Status</h4>
                     <select class="form-control" id="status" style={{ outline: this.state.color2 }} onChange={this.inputchange} >
                       <option value="">Select Status</option>
-                      <option value="true" selected={status == true}>Active</option>
-                      <option value="false" selected={status == false}>Inactive</option>
+                      <option value="Active" selected={status ==true}>Active</option>
+                      <option value="Inactive" selected={status == false}>Inactive</option>
                     </select>
                     {this.state.statusError ? <label class="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
                   </div>

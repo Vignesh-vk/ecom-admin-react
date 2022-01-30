@@ -48,6 +48,13 @@ function imagesReducer(state = intialState, action) {
                 imageInfo: action.payload.data
             }
             break;
+        case 'UPDATE_IMAGE_DATA':
+          return Object.assign({},state,{
+            imageInfo : {
+              ...state.imageInfo,
+              [action.name] : action.value
+            }
+          })
         default:
             return state;
             break;

@@ -16,13 +16,13 @@ class listImages extends React.Component {
         this.deleteImage = this.deleteImage.bind(this)
         this.deleteImageOperation = this.deleteImageOperation.bind(this)
         this.viewImage = this.viewImage.bind(this);
-        this.editImage=this.editImage.bind(this);
+        this.editImage = this.editImage.bind(this);
 
     }
     componentWillMount() {
         this.props.AC_LIST_IMAGES();
     }
-    editImage(event){
+    editImage(event) {
         let imageId = event.target.id;
         this.setState({ editStatus: true, editId: imageId })
     }
@@ -71,22 +71,22 @@ class listImages extends React.Component {
             return <Redirect to={'/viewImage' + '/' + this.state.viewId} />
         }
         if (this.state.editStatus) {
-            return <Redirect to={'/editImage'+'/'+this.state.editId} />
+            return <Redirect to={'/editImage' + '/' + this.state.editId} />
         }
         var datalist = this.props.imagesReducer.listImages;
         var activecount = 0;
         var inactivecount = 0;
         var totalcount = 0;
-        if(datalist){
-            activecount=0;
-            inactivecount=0;
-            totalcount=datalist.length;
+        if (datalist) {
+            activecount = 0;
+            inactivecount = 0;
+            totalcount = datalist.length;
         }
         var resultArray = [];
-            if(datalist==0){
-                resultArray.push(<label>No data found</label>)
-            }
-            else{
+        if (datalist == 0) {
+            resultArray.push(<label>No data found</label>)
+        }
+        else {
             for (var i = 0; i < datalist.length; i++) {
                 var tempVal = "";
                 if (datalist[i].status) {
@@ -158,26 +158,26 @@ class listImages extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                    <div class="table">
-                        <table class="table" >
-                            <thead>
-                                <tr>
-                                    <th scope="col">S.No</th>
-                                    <th scope="col"> Category</th>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                            <div class="table">
+                                <table class="table" >
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col"> Category</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                {resultArray}
-                            </tbody>
-                        </table>
+                                        {resultArray}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </div>
-                    </div>
             </>
         )
     }

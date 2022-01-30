@@ -1,12 +1,12 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { AC_LIST_COUNTRY } from '../actions/country';
-import { AC_ADD_COUNTRY } from '../actions/country';
+import { AC_LIST_LANGUAGE } from '../actions/language';
+import { AC_ADD_LANGUAGE } from '../actions/language';
 import { Redirect } from 'react-router-dom';
 import swal from 'sweetalert';
 
-class addCountry extends React.Component {
+class Addlanguage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,6 @@ class addCountry extends React.Component {
   }
 
   validation() {
-    var nameauth;
     const name = this.state.name;
     const code = this.state.code;
     const status = this.state.status
@@ -61,25 +60,23 @@ class addCountry extends React.Component {
       this.setState({ statusError: true })
     }
     if (name && code && status) {
+      swal("Language Added Successfully!", {
+        buttons: false,
+        timer: 2000,
+      });
       var tempVal;
       if (status == 'Active') {
         tempVal = true
       } else {
         tempVal = false
       }
-      // document.getElementById('addCountry').reset();
-      swal("Country Added Successfully!", {
-        buttons: false,
-        timer: 2000,
-      });
-      this.setState({ name: '', code: '', status: '' });
       const userData = {
         name: name,
         code: code,
         status: tempVal
       }
-      this.props.AC_ADD_COUNTRY(userData);
-      console.log('========Add COUNTRY========', userData)
+      this.props.AC_ADD_LANGUAGE(userData);
+      console.log('========Add Language========', userData)
     }
   }
   back() {
@@ -135,18 +132,18 @@ class addCountry extends React.Component {
   }
   render() {
     if (this.state.editStatus) {
-      return <Redirect to='/listCountry' />
+      return <Redirect to='/listLanguage' />
     }
     return (
       <div class="container-fluid pages" style={{ width: '600px', marginRight: '611px' }}>
-        <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add Country</h3>
+        <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add Language</h3>
         <div class="col-12 grid-margin stretch-card">
           <div class="card" >
             <div class="card-body">
               <form class="forms-sample">
                 <div class="form-group">
-                  <h5 style={{ fontSize: '0.875rem' }}>Country</h5>
-                  <input type="text" placeholder="Country" id="name" value={this.state.name} onChange={this.handleInputChange} class="form-control" ></input>
+                  <h5 style={{ fontSize: '0.875rem' }}>Name</h5>
+                  <input type="text" placeholder="name" id="name" value={this.state.name} onChange={this.handleInputChange} class="form-control" ></input>
                   {this.state.nameError ? <label class="mt-2" style={{ color: 'red' }}>Name is required</label> : ""}
 
                 </div>
@@ -177,10 +174,10 @@ class addCountry extends React.Component {
 function mapStateToProps(state) {
   console.log('map state', state);
   return {
-    countryReducer: state.COUNTRY_Reducer
+    languageReducer: state.LANGUAGE_Reducer
   }
 }
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ AC_LIST_COUNTRY, AC_ADD_COUNTRY }, dispatch)
+  return bindActionCreators({ AC_LIST_LANGUAGE, AC_ADD_LANGUAGE }, dispatch)
 }
-export default connect(mapStateToProps, mapDispatchToProps)(addCountry);
+export default connect(mapStateToProps, mapDispatchToProps)(Addlanguage);

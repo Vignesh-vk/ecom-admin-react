@@ -1,34 +1,23 @@
 import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { AC_LIST_FAQ, AC_DELETE_FAQ } from '../actions/faq';
+import { AC_LIST_PAYMENT, AC_DELETE_PAYMENT } from '../actions/payment';
 import swal from 'sweetalert';
 import { Redirect } from 'react-router-dom'
-class listFaqs extends React.Component {
+class listPayment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            answer: '',
-            answerError: false,
-            answerCountError: false,
-            question: '',
-            questionError: false,
-            questionCountError: false,
-            status: '',
-            statusError: false,
-            faqId: '',
-            listFaq: true,
-            editFaq: false,
+            paymentId: '',
             editStatus: false,
-            editId: '',
-            viewId: ''
+            editId: ''
         }
         this.delete = this.delete.bind(this);
-        this.editFaq = this.editFaq.bind(this);
-        this.viewFaq = this.viewFaq.bind(this);
+        this.editPayment = this.editPayment.bind(this);
+        this.viewPayment = this.viewPayment.bind(this);
     }
     delete(event) {
-        var faqId = event.target.id;
+        var paymentId = event.target.id;
         swal({
             title: "Are you sure?",
             text: "Once deleted, the file will deleted permanently!",
@@ -38,61 +27,61 @@ class listFaqs extends React.Component {
         })
         .then((willDelete) => {
             if (willDelete) {
-                this.deleteFaq(faqId);
-                swal("Faq Deleted Successfully!", {
+                this.deletePayment(paymentId);
+                swal("Payment Deleted Successfully!", {
                     buttons: false,
                     icon: "success",
                 })
             } else {
-                swal('Faq not deleted!',);
+                swal('Payment not deleted!',);
             }
         });
     }
-    deleteFaq(faqId) {
+    deletePayment(paymentId) {
         var formData = {
-            id: faqId
+            id: paymentId
         }
-        this.props.AC_LIST_FAQ();
-        this.props.AC_DELETE_FAQ(formData);
-        this.props.AC_VIEW_FAQ();
+        this.props.AC_LIST_PAYMENT();
+        this.props.AC_DELETE_PAYMENT(formData);
+        this.props.AC_LIST_PAYMENT();
+    }
+    editPayment(event) {
+        let paymentId = event.target.id;
+        this.setState({ editStatus: true, editId: paymentId })
+    }
+    viewPayment(event) {
+        let paymentId = event.target.id;
+        this.setState({ viewStatus: true, viewId: paymentId })
     }
     componentDidMount() {
-        this.props.AC_LIST_FAQ();
+        this.props.AC_LIST_PAYMENT();
     }
-    editFaq(event) {
-        let faqId = event.target.id;
-        this.setState({ editStatus: true, editId: faqId })
-    }
-    viewFaq(event) {
-        let faqId = event.target.id;
-        this.setState({ viewStatus: true, viewId: faqId })
-    }
+
     render() {
         if (this.state.editStatus) {
-            return <Redirect to={"/editFaq/" + this.state.editId} />
+            return <Redirect to={"/editPayment/" + this.state.editId} />
         }
         else if (this.state.viewStatus) {
-            return <Redirect to={"/viewFaq/" + this.state.viewId} />
+            return <Redirect to={"/viewPayment/" + this.state.viewId} />
         }
-        var TotalFaq = 0;
+        var TotalPayment = 0;
         var Active = 0;
         var Inactive = 0;
-        var faqList = this.props.faqsReducer.faqList;
-        if (faqList) {
+        var paymentList = this.props.paymentReducer.paymentList;
+        if (paymentList) {
             Active = 0;
-            TotalFaq = faqList.length;
+            TotalPayment = paymentList.length;
             Inactive = 0;
         }
-        var Faq = this.props.faqsReducer.faqList;
-        console.log("=-=-=-table=", Faq)
+        var Payment = this.props.paymentReducer.paymentList;
         var resultArray = [];
-        if (Faq == 0) {
+        if (Payment == 0) {
             resultArray.push(<label>No data found</label>)
         }
         else {
-            for (var i = 0; i < Faq.length; i++) {
+            for (var i = 0; i < Payment.length; i++) {
                 var tempVal = "";
-                if (Faq[i].status) {
+                if (Payment[i].status) {
                     tempVal = "Active";
                     Active++;
                 } else {
@@ -101,16 +90,15 @@ class listFaqs extends React.Component {
                 }
                 resultArray.push(<tr key={i} >
                     <th scope="row">{i + 1}</th>
-                    <td>{Faq[i].question}</td>
-                    <td>{Faq[i].answer}</td>
+                    <td>{Payment[i].name}</td>
+                    <td>{Payment[i].mode}</td>
                     <td>{tempVal}</td>
                     <td>
-                        <button type="button" id={Faq[i]._id} onClick={this.viewFaq} class="btn btn-success">View</button>
-                        <button type="button" id={Faq[i]._id} onClick={this.editFaq} class="btn btn-success">Edit</button>
-                        <button type="button" id={Faq[i]._id} onClick={this.delete} class="btn btn-danger">Delete</button>
+                        <button type="button" id={Payment[i]._id} onClick={this.viewPayment} class="btn btn-success">View</button>
+                        <button type="button" id={Payment[i]._id} onClick={this.editPayment} class="btn btn-success">Edit</button>
+                        <button type="button" id={Payment[i]._id} onClick={this.delete} class="btn btn-danger">delete</button>
                     </td>
-                </tr>
-                )
+                </tr>)
             }
         }
         return (
@@ -121,7 +109,7 @@ class listFaqs extends React.Component {
                             <h3 class="page-title">
                                 <span class="page-title-icon bg-gradient-primary text-white me-2">
                                     <i class="mdi mdi-home"></i>
-                                </span> List FAQ
+                                </span> List Payment
                             </h3>
                             <nav aria-label="breadcrumb">
                                 <ul class="breadcrumb">
@@ -136,9 +124,9 @@ class listFaqs extends React.Component {
                                 <div class="card bg-gradient-danger card-img-holder text-white">
                                     <div class="card-body">
                                         <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                                        <h4 class="font-weight-normal mb-3">Total FAQ <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                                        <h4 class="font-weight-normal mb-3">Total Payment <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                                         </h4>
-                                        <h2 class="mb-5">{TotalFaq}</h2>
+                                        <h2 class="mb-5">{TotalPayment}</h2>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +134,7 @@ class listFaqs extends React.Component {
                                 <div class="card bg-gradient-info card-img-holder text-white">
                                     <div class="card-body">
                                         <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                                        <h4 class="font-weight-normal mb-3">Active FAQ <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                                        <h4 class="font-weight-normal mb-3">Active Payment <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                                         </h4>
                                         <h2 class="mb-5">{Active}</h2>
                                     </div>
@@ -156,7 +144,7 @@ class listFaqs extends React.Component {
                                 <div class="card bg-gradient-success card-img-holder text-white">
                                     <div class="card-body">
                                         <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                                        <h4 class="font-weight-normal mb-3">Inactive FAQ <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                                        <h4 class="font-weight-normal mb-3">Inactive Payment <i class="mdi mdi-diamond mdi-24px float-right"></i>
                                         </h4>
                                         <h2 class="mb-5">{Inactive}</h2>
                                     </div>
@@ -167,8 +155,8 @@ class listFaqs extends React.Component {
                                     <thead>
                                         <tr>
                                             <th scope="col">S.No</th>
-                                            <th scope="col"> Questions</th>
-                                            <th scope="col">Answers</th>
+                                            <th scope="col"> Name</th>
+                                            <th scope="col">Mode</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Actions</th>
                                         </tr>
@@ -183,18 +171,16 @@ class listFaqs extends React.Component {
                     </div>
                 </div>
             </>
+
         );
     }
 }
-
 function mapStateToProps(state) {
-    console.log('map state', state);
     return {
-        faqsReducer: state.FAQ_Reducer
+        paymentReducer: state.PAYMENT_Reducer
     }
 }
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ AC_LIST_FAQ, AC_DELETE_FAQ }, dispatch)
+    return bindActionCreators({ AC_LIST_PAYMENT, AC_DELETE_PAYMENT }, dispatch)
 }
-export default connect(mapStateToProps, mapDispatchToProps)(listFaqs);
-
+export default connect(mapStateToProps, mapDispatchToProps)(listPayment);

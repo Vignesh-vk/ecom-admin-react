@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import swal from 'sweetalert';
 import Default from "../../images/default image.png";
-
+import { Redirect } from 'react-router-dom';
 
 class addImage extends React.Component {
     constructor(props) {
@@ -21,11 +21,12 @@ class addImage extends React.Component {
             statusError: false,
             color2: '',
             imagedefault: Default,
-            imgSrc:''
+            imgSrc: '',
+            editStatus: false
         }
         this.validation = this.validation.bind(this)
         this.inputchange = this.inputchange.bind(this);
-
+        this.back = this.back.bind(this)
     }
     componentDidMount() {
         this.props.AC_LIST_IMAGES();
@@ -66,16 +67,16 @@ class addImage extends React.Component {
             document.getElementById('addImage').reset();
             swal("Image Added Successfully!", {
                 buttons: false,
-                icon:"Success"
+                icon: "success"
             });
             this.setState({ category: '', filedata: '', status: '' });
         }
         var tempVal;
-      if (status == 'Active') {
-        tempVal = true
-      } else {
-        tempVal = false
-      }
+        if (status == 'active') {
+            tempVal = true
+        } else {
+            tempVal = false
+        }
         var formdata = new FormData();
         formdata.append("category", category);
         formdata.append('image', filedata);
@@ -94,7 +95,7 @@ class addImage extends React.Component {
         if (fieldId == "category") {
             this.setState({ category: fieldValue })
             if (fieldValue) {
-                if (fieldValue.length < 5) {
+                if (fieldValue.length < 1) {
                     this.setState({ categoryError: false, categoryCountError: true, color0: 'red' })
                 }
                 else {
@@ -128,115 +129,73 @@ class addImage extends React.Component {
                 this.setState({ statusError: true, color2: '1px solid red' })
             }
         }
-
+    }
+    back() {
+        this.setState({ editStatus: true })
     }
     render() {
+        if (this.state.editStatus) {
+            return <Redirect to='/listImages' />
+        }
         return (
             <>
-            <div class="container-fluid pages" style={{ width: '600px', marginRight: '611px' }}>
-                <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add Image</h3>
-                <div class="col-12 grid-margin stretch-card">
-                    <div class="card" >
-                        <div class="card-body">
-                                    <form className="forms-sample" id="addImage">
-                                        <div className="form-group">
-                                            <label for="exampleInputUsername1">CATEGORY</label>
-                                            <input type="text" autoComplete='off' placeholder="Category" id="category" value={this.state.category} onChange={this.inputchange} style={{ borderColor: this.state.color0 }} className="form-control" />
-                                            {this.state.categoryError ? <label className="mt-2" style={{ color: 'red' }}>Categroy is required</label> : ""}
-                                            {this.state.categoryCountError ? <label className="mt-2" style={{ color: 'red' }}>Categroy should be atleast 5 characters</label> : ""}
-                                        </div>
-                                        <div className="form-group">
-                                            <label for="exampleInputUsername1">IMAGE</label>
-                                            {this.state.imgSrc ?
-                                            <img src={this.state.imgSrc} style={{width:"100px",height:"100px"}} class=" round rounded ml-auto d-block" alt="" />:
-                                            <img src={Default} style={{width:"100px",height:"100px"}} class=" round rounded ml-auto d-block" alt="" />}
-                                            <br />
-                                            <input type="file" id="upload" ref="file" name="user[image]" multiple="true" onChange={this.inputchange} style={{ borderColor: this.state.color1, }}></input>
-                                            <br />
-                                    
-                                            {this.state.fileError ? <label className="mt-2" style={{ color: 'red' }}>Image is required</label> : ""}
-                                        </div>
+                <div class="container-fluid pages" style={{ width: '600px', marginRight: '611px' }}>
+                    <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add Image</h3>
+                    <div class="col-12 grid-margin stretch-card">
+                        <div class="card" >
+                            <div class="card-body">
+                                <form className="forms-sample" id="addImage">
+                                    <div className="form-group">
+                                        <label for="exampleInputUsername1">Category</label>
+                                        <input type="text" autoComplete='off' placeholder="Category" id="category" value={this.state.category} onChange={this.inputchange} style={{ borderColor: this.state.color0 }} className="form-control" />
+                                        {this.state.categoryError ? <label className="mt-2" style={{ color: 'red' }}>Categroy is required</label> : ""}
+                                    </div>
+                                    <div className="form-group">
+                                        <label for="exampleInputUsername1">Image</label>
+                                        {this.state.imgSrc ?
+                                            <img src={this.state.imgSrc} style={{ width: "100px", height: "100px" }} class=" round rounded ml-auto d-block" alt="" /> :
+                                            <img src={Default} style={{ width: "100px", height: "100px" }} class=" round rounded ml-auto d-block" alt="" />}
+                                        <br />
+                                        <input type="file" id="upload" ref="file" name="user[image]" multiple="true" onChange={this.inputchange} style={{ borderColor: this.state.color1, }}></input>
+                                        <br />
+                                        {this.state.fileError ? <label className="mt-2" style={{ color: 'red' }}>Image is required</label> : ""}
+                                    </div>
 
-                                        <div className="form-group" >
-                                            <label for="exampleInputUsername1">STATUS</label>
-                                            <select className="form-control" id="status" style={{ backgroundColor: 'white' }} onChange={this.inputchange} style={{ borderColor: this.state.color0 }} >
-                                                <option value="Status">Status</option>
-                                                <option value="active">Active</option>
-                                                <option value="inactive">Inactive</option>
-                                            </select>
-                                            {this.state.statusError ? <label className="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
-                                        </div>
-                                        <button type="button" className="btn btn-gradient-primary me-2" style={{
-                                            backgroundColor: 'blue',
-                                            color: 'white'
-                                        }} onClick={this.validation}>Submit</button>
-                                    </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                {/* <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-6 grid-margin stretch-card">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h4 className="card-title">Add Image</h4>
-                                    <form className="forms-sample" id="addImage">
-                                        <div className="form-group">
-                                            <label for="exampleInputUsername1">CATEGORY</label>
-                                            <input type="text" autoComplete='off' placeholder="Category" id="category" value={this.state.category} onChange={this.inputchange} style={{ borderColor: this.state.color0 }} className="form-control" />
-                                            {this.state.categoryError ? <label className="mt-2" style={{ color: 'red' }}>Categroy is required</label> : ""}
-                                            {this.state.categoryCountError ? <label className="mt-2" style={{ color: 'red' }}>Categroy should be atleast 5 characters</label> : ""}
-                                        </div>
-                                        <div className="form-group">
-                                            <label for="exampleInputUsername1">IMAGE</label>
-                                            {this.state.imgSrc ?
-                                            <img src={this.state.imgSrc} style={{width:"200px",height:"200px"}} class=" round rounded ml-auto d-block" alt="" />:
-                                            <img src={Default} style={{width:"200px",height:"200px"}} class=" round rounded ml-auto d-block" alt="" />}
-                                            <br />
-                                            <input type="file" id="upload" ref="file" name="user[image]" multiple="true" onChange={this.inputchange} style={{ borderColor: this.state.color1, }}></input>
-                                            <br />
-                                    
-                                            {this.state.fileError ? <label className="mt-2" style={{ color: 'red' }}>Image is required</label> : ""}
-                                        </div>
-
-                                        <div className="form-group" >
-                                            <label for="exampleInputUsername1">STATUS</label>
-                                            <select className="form-control" id="status" style={{ backgroundColor: 'white' }} onChange={this.inputchange} style={{ borderColor: this.state.color0 }} >
-                                                <option value="Status">Status</option>
-                                                <option value="active">Active</option>
-                                                <option value="inactive">Inactive</option>
-                                            </select>
-                                            {this.state.statusError ? <label className="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
-                                        </div>
-                                        <button type="button" className="btn btn-gradient-primary me-2" style={{
-                                            backgroundColor: 'blue',
-                                            color: 'white'
-                                        }} onClick={this.validation}>Submit</button>
-                                    </form>
-                                </div>
+                                    <div className="form-group" >
+                                        <label for="exampleInputUsername1">Status</label>
+                                        <select className="form-control" id="status" onChange={this.inputchange} style={{ backgroundColor: 'white' }} onChange={this.inputchange} style={{ borderColor: this.state.color0 }} >
+                                            <option value="Status">Status</option>
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                        {this.state.statusError ? <label className="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
+                                    </div>
+                                    <button type="button" className="btn btn-gradient-primary me-2" style={{
+                                        backgroundColor: 'blue',
+                                        color: 'white',
+                                        borderRadius: '2rem'
+                                    }} onClick={this.validation}>Submit</button>
+                                    <button type="button" className="btn btn-gradient-primary me-2" style={{
+                                        backgroundColor: 'blue',
+                                        color: 'white',
+                                        borderRadius: '2rem'
+                                    }} onClick={this.back}>Cancel</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
             </>
         )
     }
 }
-
 function mapStateToProps(state) {
-
     return {
-
         image: state.imagesReducer
     }
 }
-
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ AC_ADD_IMAGE, AC_LIST_IMAGES }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(addImage);
-
-
-

@@ -77,6 +77,58 @@ export default class Sidebar extends React.Component {
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#currency-pages" aria-expanded="false" aria-controls="currency-pages">
+                            <span class="menu-title">Currency</span>
+                            <i class="menu-arrow"></i>
+                            {/* <i class="mdi mdi-book-open-page-variant"></i> */}
+                        </a>
+                        <div class="collapse" id="currency-pages">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <Link class="nav-link" to="/addCurrency"> Add Currency </Link></li>
+                                <li class="nav-item"> <Link class="nav-link" to="/listCurrency"> List Currency </Link></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#language-pages" aria-expanded="false" aria-controls="language-pages">
+                            <span class="menu-title">Language</span>
+                            <i class="menu-arrow"></i>
+                            {/* <i class="mdi mdi-book-open-page-variant"></i> */}
+                        </a>
+                        <div class="collapse" id="language-pages">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <Link class="nav-link" to="/addlanguage"> Add Language </Link></li>
+                                <li class="nav-item"> <Link class="nav-link" to="/listlanguage"> List Language </Link></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#news-pages" aria-expanded="false" aria-controls="news-pages">
+                            <span class="menu-title">Newsletter</span>
+                            <i class="menu-arrow"></i>
+                            {/* <i class="mdi mdi-book-open-page-variant"></i> */}
+                        </a>
+                        <div class="collapse" id="news-pages">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <Link class="nav-link" to="/addNewsletter"> Add Newsletter </Link></li>
+                                <li class="nav-item"> <Link class="nav-link" to="/listNewsletter"> List Newsletter </Link></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#payment-pages" aria-expanded="false" aria-controls="payment-pages">
+                            <span class="menu-title">Payment</span>
+                            <i class="menu-arrow"></i>
+                            {/* <i class="mdi mdi-book-open-page-variant"></i> */}
+                        </a>
+                        <div class="collapse" id="payment-pages">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <Link class="nav-link" to="/addPayment"> Add Payment </Link></li>
+                                <li class="nav-item"> <Link class="nav-link" to="/listPayment"> List Payment </Link></li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </nav>
 

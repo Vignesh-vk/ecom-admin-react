@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { AC_LIST_PAGE } from '../actions/pages';
 import { AC_ADD_PAGE } from '../actions/pages';
+import { Redirect } from 'react-router-dom';
+import swal from 'sweetalert';
 //editor
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -28,11 +30,13 @@ class AddPages extends React.Component {
         titleCountError: false,
         status: '',
         statusError: false,
+        editStatus: false
       }
     }
     this.validation = this.validation.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onEditorStateChange = this.onEditorStateChange.bind(this);
+    this.back = this.back.bind(this);
   }
 
   onEditorStateChange(editorState) {
@@ -43,35 +47,34 @@ class AddPages extends React.Component {
 
   validation() {
     const { editorState } = this.state;
-    var value=draftToHtml(convertToRaw(editorState.getCurrentContent()))
-    var titleauth;
-    var statusauth;
+    var value = draftToHtml(convertToRaw(editorState.getCurrentContent()))
     const title = this.state.title;
     const status = this.state.status
     if (title) {
-      if (title.length < 5) {
-        titleauth = false
+      if (title.length < 1) {
         this.setState({ titleError: false, titleCountError: true })
       }
       else {
-        titleauth = true
         this.setState({ titleError: false, titleCountError: false })
       }
     }
     else {
-      titleauth = false
       this.setState({ titleError: true, titleCountError: false })
     }
 
     if (status) {
-      statusauth = true
       this.setState({ statusError: false })
     }
     else {
-      statusauth = false
       this.setState({ statusError: true })
     }
-    if (titleauth && statusauth) {
+    if (title && status) {
+      swal("Page Added Successfully!", {
+        buttons: false,
+        timer: 2000,
+      });
+      this.setState({ title: '',  status: '' });
+
       var tempVal;
       if (status == 'Active') {
         tempVal = true
@@ -84,7 +87,6 @@ class AddPages extends React.Component {
         status: tempVal
       }
       this.props.AC_ADD_PAGE(formData);
-      console.log('========Add page========', formData)
     }
   }
 
@@ -140,16 +142,20 @@ class AddPages extends React.Component {
     var pageValue = this.state.editorState.getCurrentContent().getPlainText();
     if (pageValue) {
 
-        this.setState({ description: pageValue, descriptionError: false })
+      this.setState({ description: pageValue, descriptionError: false })
     }
     else {
-        this.setState({ description: pageValue, descriptionError: true })
+      this.setState({ description: pageValue, descriptionError: true })
     }
-
-    console.log("=-=-=description-=-=-", this.state.description);
-}
+  }
+  back() {
+    this.setState({ editStatus: true })
+  }
   render() {
     const { editorState } = this.state;
+    if (this.state.editStatus) {
+      return <Redirect to='/listFaq' />
+    }
     return (
       <div class="container-fluid pages" style={{ width: '600px', marginRight: '611px' }}>
         <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add Page</h3>
@@ -159,19 +165,18 @@ class AddPages extends React.Component {
               <form class="forms-sample" autoComplete='off'>
                 <div class="form-group">
                   <h5 style={{ fontSize: '0.875rem' }}>Title</h5>
-                  <input type="text" placeholder="title" id="title" value={this.state.title} onChange={this.handleInputChange} style={{ borderColor: this.state.color0 }} class="form-control" ></input>
-                  {this.state.titleError ? <label class="mt-2" style={{ color: 'red' }}>title is required</label> : ""}
-                  {this.state.titleCountError ? <label class="mt-2" style={{ color: 'red' }}>title should be atleast 5 characters</label> : ""}
+                  <input type="text" placeholder="Title" id="title" value={this.state.title} onChange={this.handleInputChange} style={{ borderColor: this.state.color0 }} class="form-control" ></input>
+                  {this.state.titleError ? <label class="mt-2" style={{ color: 'red' }}>Title is required</label> : ""}
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail3">Description</label>
-                  <Editor toolbarClassName="toolbarClassName" 
-                  wrapperClassName="wrapperClassName" 
-                  onEditorStateChange={this.onEditorStateChange} 
-                  editorState={this.state.editorState} 
-                  editorClassName="editorClassName" 
-                  placeholder="What ever you mention goes here..." 
-                  onChange={this.edit} />
+                  <Editor toolbarClassName="toolbarClassName"
+                    wrapperClassName="wrapperClassName"
+                    onEditorStateChange={this.onEditorStateChange}
+                    editorState={this.state.editorState}
+                    editorClassName="editorClassName"
+                    placeholder="What ever you mention goes here..."
+                    onChange={this.edit} />
                   {this.state.descriptionCountError ? <label class="mt-2" style={{ color: 'red' }}>Description should be atleast 5 characters</label> : ""}
                 </div>
                 <div class="form-group">
@@ -184,7 +189,7 @@ class AddPages extends React.Component {
                   {this.state.statusError ? <label class="mt-2" style={{ color: 'red' }}>Status is required</label> : ""}
                 </div>
                 <button type="button" class="btn btn-gradient-primary me-2" style={{ backgroundColor: 'blue', color: 'white', borderRadius: '2rem' }} onClick={this.validation}>Submit</button>
-                <button type="button" class="btn btn-gradient-primary me-2" style={{ backgroundColor: 'blue', color: 'white', borderRadius: '2rem' }} onClick={this.validation}>Cancel</button>
+                <button type="button" class="btn btn-gradient-primary me-2" style={{ backgroundColor: 'blue', color: 'white', borderRadius: '2rem' }} onClick={this.back}>Cancel</button>
               </form>
             </div>
           </div>

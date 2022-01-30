@@ -2,6 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { AC_LIST_FAQ, AC_ADD_FAQ, AC_VIEW_FAQ, AC_HANDLE_INPUT_CHANGE } from '../actions/faq';
+import { Redirect } from 'react-router-dom';
 // import swal from 'sweetalert';
 class editFaq extends React.Component {
     constructor(props) {
@@ -15,9 +16,11 @@ class editFaq extends React.Component {
             questionCountError: false,
             status: '',
             statusError: false,
+            editStatus:false
         }
         this.validation = this.validation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.back=this.back.bind(this);
     }
 
     validation() {
@@ -46,19 +49,23 @@ class editFaq extends React.Component {
         let formData = {id:faqId}
         this.props.AC_VIEW_FAQ(formData);
     }
-
-
+    back(){
+        this.setState({ editStatus: true })
+    }
     render() {
+        if (this.state.editStatus) {
+            return <Redirect to='/listFaq' />
+          }
         const question = this.props.faqsReducer.faqInfo.question;
         const answer = this.props.faqsReducer.faqInfo.answer;
         const status = this.props.faqsReducer.faqInfo.status;
         return (
             <div className="container-fluid">
+                <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Edit FAQ</h3>
                 <div className="row">
                     <div className="col-md-6 grid-margin stretch-card">
                         <div className="card">
                             <div className="card-body">
-                                <h4 className="card-title">Edit Faq</h4>
                                 <form className="forms-sample" id="editFaq">
                                     <div className="form-group">
                                         <label for="exampleInputUsername1">QUESTION</label>
@@ -85,8 +92,14 @@ class editFaq extends React.Component {
                                     </div>
                                     <button type="button" className="btn btn-gradient-primary me-2" style={{
                                         backgroundColor: 'blue',
-                                        color: 'white'
+                                        color: 'white',
+                                        borderRadius: '2rem'
                                     }} onClick={this.validation}>Submit</button>
+                                    <button type="button" className="btn btn-gradient-primary me-2" style={{
+                                        backgroundColor: 'blue',
+                                        color: 'white',
+                                        borderRadius: '2rem'
+                                    }} onClick={this.back}>Cancel</button>
                                 </form>
                             </div>
                         </div>
