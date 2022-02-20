@@ -46,6 +46,10 @@ import listPayment from './components/payment/listPayment';
 import editPayment from './components/payment/editPayment';
 import viewPayment from './components/payment/viewPayment';
 
+//User management
+import listUser from './components/user/listUser';
+import viewUser from './components/user/viewUser';
+
 function App() {
   return (
     <Router>
@@ -95,6 +99,9 @@ function App() {
       <Route exact path="/listPayment" component={listPayment}/>
       <Route exact path="/editPayment/:id" component={editPayment}/>
       <Route exact path="/viewPayment/:id" component={viewPayment}/>
+
+      <Route exact path='/listUser' component={listUser}/>
+      <Route exact path='/viewUser/:id' component={viewUser}/>
 
       <Route exact path="/" component={Dashboard}/>
       </Switch>
