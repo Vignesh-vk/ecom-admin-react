@@ -46,9 +46,15 @@ import listPayment from './components/payment/listPayment';
 import editPayment from './components/payment/editPayment';
 import viewPayment from './components/payment/viewPayment';
 
+import addConfiguration from './components/configuration/addConfiguration';
+import listConfiguration from './components/configuration/listConfiguration';
+import editConfiguration from './components/configuration/editConfiguration';
+import viewConfiguration from './components/configuration/viewConfiguration';
+
 //User management
 import listUser from './components/user/listUser';
 import viewUser from './components/user/viewUser';
+
 
 function App() {
   return (
@@ -99,6 +105,11 @@ function App() {
       <Route exact path="/listPayment" component={listPayment}/>
       <Route exact path="/editPayment/:id" component={editPayment}/>
       <Route exact path="/viewPayment/:id" component={viewPayment}/>
+
+      <Route exact path="/addConfig" component={addConfiguration}/>
+      <Route exact path="/listConfig" component={listConfiguration}/>
+      <Route exact path='/editConfig/:id' component={editConfiguration}/>
+      <Route exact path='/viewConfig/:id' component={viewConfiguration}/>
 
       <Route exact path='/listUser' component={listUser}/>
       <Route exact path='/viewUser/:id' component={viewUser}/>

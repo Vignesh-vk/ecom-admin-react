@@ -142,6 +142,21 @@ export default class Sidebar extends React.Component {
                             </ul>
                         </div>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#config-pages" aria-expanded="false" aria-controls="config-pages">
+                            <span class="menu-title">Configuration</span>
+                            <i class="menu-arrow"></i>
+                            {/* <i class="mdi mdi-book-open-page-variant"></i> */}
+                        </a>
+                        <div class="collapse" id="config-pages">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <Link class="nav-link" to="/addConfig"> Add Configuration </Link></li>
+                                <li class="nav-item"> <Link class="nav-link" to="/listConfig"> List Configuration </Link></li>
+                            </ul>
+                        </div>
+                    </li>
+
                 </ul>
             </nav>
 
