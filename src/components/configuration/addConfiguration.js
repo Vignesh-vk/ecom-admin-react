@@ -84,7 +84,7 @@ class addConfiguration extends React.Component {
       this.setState({ name: '', slug: '', status: '',description:'' });
       const userData = {
         name: name,
-        code: slug,
+        slug: slug,
         description:description,
         status: tempVal
       }
@@ -138,6 +138,21 @@ class addConfiguration extends React.Component {
       }
     }
 
+    if (descriptionid == "description") {
+      this.setState({ description: descriptionvalue })
+      if (descriptionvalue) {
+        if (descriptionvalue.length < 2) {
+          this.setState({ descriptionError: false, descriptionCountError: true })
+        }
+        else {
+          this.setState({ descriptionError: false, descriptionCountError: false })
+        }
+      }
+      else {
+        this.setState({ descriptionError: true, descriptionCountError: false })
+      }
+    }
+
     if (statusid == "status") {
       this.setState({ status: statusvalue })
       if (statusvalue) {
@@ -145,15 +160,6 @@ class addConfiguration extends React.Component {
       }
       else {
         this.setState({ statusError: true })
-      }
-    }
-    if (descriptionid == "status") {
-      this.setState({ description: descriptionvalue })
-      if (descriptionvalue) {
-        this.setState({ descriptionError: false })
-      }
-      else {
-        this.setState({ descriptionError: true })
       }
     }
   }

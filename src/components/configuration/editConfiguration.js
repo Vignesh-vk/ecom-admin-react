@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { AC_LIST_CONFIGURATION, AC_ADD_CONFIGURATION, AC_VIEW_CONFIGURATION, AC_HANDLE_INPUT_CHANGE } from '../actions/config';
 import { Redirect } from 'react-router-dom';
-// import swal from 'sweetalert';
+import swal from 'sweetalert';
 class editConfiguration extends React.Component {
     constructor(props) {
         super(props);
@@ -24,12 +24,25 @@ class editConfiguration extends React.Component {
             status: '',
             statusError: false,
             editStatus: false,
-            addText: [{}]
+
+            show: false,
+
+            nameopt:"",
+                slugopt:"",
+                sortopt:"",
+                descriptionopt:"",
+                statusopt:"",
+                nameoptError:false,
+                slugoptError:false,
+                sortoptError:false,
+                descriptionoptError:false,
+                statusoptError:false,
 
         }
         this.validation = this.validation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.back = this.back.bind(this);
+        this.show = this.show.bind(this);
     }
 
     validation() {
@@ -62,12 +75,68 @@ class editConfiguration extends React.Component {
     back() {
         this.setState({ editStatus: true })
     }
-    add() {
-        this.setState((
-            {
-                addText: [...this.state.addText, {}]
-            }
-        ))
+
+    valid(event){
+        var id=event.target.id;
+        var value=event.target.value;
+        console.log("=-=statusopt-=-",event);
+        console.log("=-=statusopt  value-=-",value);
+    
+    
+      
+        if(id=='nameopt')
+        {
+            this.setState({nameopt:value,nameoptError:false})
+        }
+        if(id=='slugopt')
+        {
+            this.setState({slugopt:value,slugoptError:false})
+        }
+        if(id=='sortopt')
+        {
+            this.setState({sortopt:value,sortoptError:false})
+        }
+        if(id=='descriptionopt')
+        {
+          this.setState({descriptionopt:value,descriptionoptError:false})
+        }
+        if(id=='statusopt'){
+            this.setState({statusopt:value,statusoptError:false})
+            console.log("=-=statusopt-=-",value);
+        }
+      }
+
+      add()
+    {
+        const nameopt=this.nameopt2(this.state.nameopt)
+        const slugopt=this.slugopt2(this.state.slugopt)
+        const sortopt=this.sortopt2(this.state.sortopt)
+        const descriptionopt=this.descriptionopt2(this.state.descriptionopt)
+        const statusopt=this.statusopt2(this.state.statusopt)
+        const conid=this.conid2(this.props.configurationsReducer.configurationInfo.id);
+  
+          if(nameopt && slugopt && sortopt && descriptionopt && statusopt && conid)
+          {
+              var formData={
+                  conid:this.props.configurationsReducer.configurationInfo.id,
+                  name:this.state.nameopt,
+                  slug:this.state.slugopt,
+                  sort:this.state.sortopt,
+                  description:this.state.descriptionopt,
+                  status:this.state.statusopt,
+              }
+              this.props.AC_LIST_OPTION();
+              this.props.AC_ADD_OPTION(formData);
+              this.setState({nameopt:"",slugopt:"",sortopt:"",descriptionopt:"",statusopt:""});
+              this.props.AC_LIST_OPTION();
+              swal("Done", "successfully Added", "success");
+              this.setState({showtable:true});  
+  
+          }   
+    }
+
+    show() {
+        this.setState({ show: true })
     }
     render() {
         const name = this.props.configReducer.configInfo.name;
@@ -77,6 +146,32 @@ class editConfiguration extends React.Component {
         if (this.state.editStatus) {
             return <Redirect to='/listConfiguration' />
         }
+
+        // var result=[];
+        // var id=1;
+        // if(option){
+		// 	for(var i=0;i<option.length;i++){
+        //   const optid=option[i].conid;
+        //   if(conid==optid)
+        //         {
+        //           result.push(
+        //             <tr key={i}>
+        //                 <td>{id++}</td>
+        //                 <td>{option[i].name}</td>
+        //                 <td>{option[i].slug}</td>
+        //                 <td>{option[i].sort}</td>
+        //                 <td>{option[i].description}</td>
+        //                 <td >{option[i].status}</td>
+        //                 <td>
+        //                     {/* <a class="view"   title="view" data-toggle="tooltip"><i  id={option[i]._id}  onClick={this.viewoption} class="fas fa-eye" style={{marginRight : '15px',cursor:'pointer',color:"#704f89"}}></i></a>
+        //                     <a class="edit"   title="edit" data-toggle="tooltip"><i  id={option[i]._id} onClick={this.editoption} class="fas fa-edit" style={{marginRight : '15px',cursor:'pointer',color:"#704f89"}} ></i></a> */}
+        //                     <a class="delete" title="Delete" data-toggle="tooltip"><i id={option[i]._id}  onClick={this.delete} class="far fa-trash-alt" style={{cursor:'pointer',color:"#704f89"}}></i></a>
+        //                 </td>
+        //             </tr>
+        //           )
+        //         }
+        //     }
+        // }
         return (
             <div className="container-fluid">
                 <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Edit Configuration</h3>
@@ -129,27 +224,91 @@ class editConfiguration extends React.Component {
                                         }} onClick={this.back}>Cancel</button>
                                     </div>
 
-                                    <div style={{position:'relative',bottom:'100px'}}>
-                                        <button type="button" className="btn btn-gradient-primary me-2" style={{
-                                            backgroundColor: 'blue',
-                                            color: 'white',
-                                            borderRadius: '2rem'
-                                        }} onClick={() => this.add()}>Add field</button>
-                                        <div>
-                                            {this.state.addText.map(() => (
-                                                <div>
-                                                    <input type="text" placeholder='Name' />
-                                                    <input type="text" placeholder='Slug' />
-                                                    <input type="text" placeholder='Description' />
-                                                    <select className="form-control" style={{ borderColor: 'black', position: 'relative', left: '670px', bottom: '25px', width: '150px' }}>
-                                                        <option value="">Select Status</option>
-                                                        <option value="true" selected={status == true}>Active</option>
-                                                        <option value="false" selected={status == false}>Inactive</option>
-                                                    </select>
-                                                </div>
-                                            ))}
-                                        </div>
+
+                                    <div class="container-fluid" >
+                                        <button type="button" onClick={this.show} style={{ backgroundColor: 'blue', color: "white" }} className=" btn btn-primary">Add option</button>
                                     </div>
+
+
+                                    <div>
+                                        {this.state.show ?
+
+                                            <div class="container-fluid" >
+                                                <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2" style={{ marginLeft: '37px', marginTop: '47px' }}><i class="mdi mdi-comment-plus-outline"></i></span>Add Options</h3>
+                                                <form id="quickForm" autoComplete="off">
+                                                    <div class="card-body">
+                                                        <table>
+                                                            <tr>
+                                                                <td><label>Name</label></td>
+                                                                <td><label>Slug</label></td>
+                                                                <td><label>Sort</label></td>
+                                                                <td><label>Description</label></td>
+                                                                <td><label>Status </label></td>
+                                                                <td>&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+
+
+                                                                <td><div class="form-group"><input className="form-control" type="text" name="nameopt" id="nameopt" placeholder="Enter Your Name" onChange={this.valid} /></div></td>
+                                                                <td><div class="form-group"><input className="form-control" type="text" name="slugopt" id="slugopt" placeholder="Enter Your Slug" onChange={this.valid} /></div></td>
+                                                                <td><div class="form-group"><input className="form-control" type="text" name="sortopt" id="sortopt" placeholder="Enter Your Sort" onChange={this.valid} /></div></td>
+                                                                <td><div class="form-group"><input className="form-control" type="text" name="descriptionopt" id="descriptionopt" placeholder="Enter Your Description" onClick={this.valid} /></div></td>
+                                                                <td><div class="form-group" style={{ width: '86px' }}><input style={{ marginLeft: '18px', cursor: 'pointer' }} unchecked class="apple-switch" id="statusopt" type="checkbox" onChange={this.valid}></input> </div></td>
+                                                                <td><div class="form-group"><input type="button" className="btn btn-primary" style={{ backgroundColor: "blue", color: "white" }} value="Add" onClick={this.add} /></div></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><div>{this.state.nameoptError ? <label style={{ color: 'red' }}>Name is required*</label> : ""}</div></td>
+                                                                <td><div >{this.state.slugoptError ? <label style={{ color: 'red' }}>Slug is required*</label> : ""}</div></td>
+                                                                <td><div >{this.state.sortoptError ? <label style={{ color: 'red' }}>Sort is required*</label> : ""}</div></td>
+                                                                <td><div >{this.state.descriptionoptError ? <label style={{ color: 'red' }}>Description is required*</label> : ""}</div></td>
+                                                                <td><div >{this.state.statusoptError ? <label style={{ color: 'red' }}>Status is required**</label> : ""}</div></td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            : ""}
+                                    </div>
+                                    <div>
+                                        {this.state.showtable ?
+
+                                            <div class="container-fluid" >
+                                                <div class="col-md-12">
+                                                    <div class="card card-primary" style={{ border: 'BLACK', borderRadius: '8px' }}>
+                                                        <div class="card-header" style={{ backgroundColor: '' }}>
+                                                            <h2 class="card-title">options</h2>
+                                                        </div>
+                                                        <div class="card-body" >
+                                                            <div class="table-wrapper" style={{ border: 'solid 1px gray' }}>
+                                                                <div class="table-title">
+                                                                    <table class="table table-striped table-hover">
+                                                                        <thead >
+                                                                            <tr>
+                                                                                <th >S.No</th>
+                                                                                <th>Name</th>
+                                                                                <th>Slug</th>
+                                                                                <th>Sort</th>
+                                                                                <th>Description</th>
+                                                                                <th>Status</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {/* {result} */}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            : ""}
+                                    </div>
+
+
+
                                 </form>
                             </div>
                         </div>
