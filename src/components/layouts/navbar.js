@@ -1,6 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 export default class navbar extends React.Component {
+  logout(){
+    localStorage.clear();
+      <Redirect to={"/"}/>
+  }
   render() {
     return (
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -28,8 +32,8 @@ export default class navbar extends React.Component {
                 <a class="dropdown-item"href="#">
                   <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">
-                  <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
+                <a class="dropdown-item">
+                  <i class="mdi mdi-logout me-2 text-primary" onClick={this.logout}></i> Signout </a>
               </div>
             </li>
             <li class="nav-item d-none d-lg-block full-screen-link">
@@ -86,7 +90,7 @@ export default class navbar extends React.Component {
               </div>
             </li>
             <li class="nav-item nav-logout d-none d-lg-block">
-              <a class="nav-link" href="#">
+              <a class="nav-link" onClick={this.logout}>
                 <i class="mdi mdi-power" style={{color: 'black'}}></i>
               </a>
             </li>

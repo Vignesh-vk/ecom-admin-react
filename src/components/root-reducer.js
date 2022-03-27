@@ -9,6 +9,7 @@ import NEWSLETTER_Reducer from "./reducers/newsletterred"
 import PAYMENT_Reducer from "./reducers/paymentred"
 import USER_Reducer from "./reducers/userred";
 import CONFIGURATION_Reducer from "./reducers/configred"
+import loginReducer from "./reducers/loginred"
 const rootReducer=combineReducers({
     FAQ_Reducer,
     PAGE_Reducer,
@@ -19,6 +20,7 @@ const rootReducer=combineReducers({
     NEWSLETTER_Reducer,
     PAYMENT_Reducer,
     USER_Reducer,
-    CONFIGURATION_Reducer
+    CONFIGURATION_Reducer,
+    loginReducer
 })
 export default rootReducer;
