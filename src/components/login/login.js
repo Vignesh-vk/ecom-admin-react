@@ -44,11 +44,19 @@ class Login extends React.Component {
       this.setState({ passwordError: true,color1: "red" })
     }
     if (email &&  password) {
-      swal("Login Successfully!", {
+      swal("Login Success!", {
         buttons: false,
         timer: 2000,
+        icon:"success"
       });
        this.setState({ email: '', password: '' });
+    }else{
+      swal("Please enter email and password", {
+        buttons: false,
+        timer: 2000,
+        icon:"error"
+      });
+      console.log(this.props.loginreducer.loginInfo)
     }
     const formData = {
       email: this.state.email,
@@ -102,33 +110,28 @@ class Login extends React.Component {
               <div class="row w-100 mx-0">
                 <div class="col-lg-4 mx-auto">
                   <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                    <div class="brand-logo">
-                      <img src="../../images/logo.svg" alt="logo" />
-                    </div>
-                    <h4>Hello! let's get started</h4>
-                    <h6 class="fw-light">Sign in to continue.</h6>
+                    <h6 class="fw-light">Sign in to continue...</h6>
                     <form class="pt-3">
                       <div class="form-group">
-                        <input type="email" class="form-control form-control-lg" id="login" onChange={this.handleinputchange} value={this.state.login} placeholder="Username" />
-                        {this.state.loginError ? <label className="mt-2" style={{ color: 'red' }}>email is required</label> : ""}
+                      <div>Enter your email</div>
+                        <input type="text" class="form-control form-control-lg" id="login" onChange={this.handleinputchange} value={this.state.login} placeholder="Email" autoComplete='off'/>
+                        {this.state.loginError ? <label className="mt-2" style={{ color: 'red' }}>Email is required</label> : ""}
                       </div>
                       <div class="form-group">
+                        <div>Enter Password</div>
                         <input type="password" class="form-control form-control-lg" id="password" onChange={this.handleinputchange} value={this.state.password} placeholder="Password" />
-                        {this.state.passwordError ? <label className="mt-2" style={{ color: 'red' }}>password should be atleast 5 characters</label> : ""}
+                        {this.state.passwordError ? <label className="mt-2" style={{ color: 'red' }}>Password should be atleast 5 characters</label> : ""}
                       </div>
                       <div class="mt-3">
-                        <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" onClick={this.validation}>SIGN IN</a>
+                        <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" onClick={this.validation}>Sign in</a>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
-
       </>
     );
   }
@@ -138,7 +141,7 @@ class Login extends React.Component {
 function mapStateToProps(state) {
   console.log('map state', state);
   return {
-    loginreducer: state.loginreducer
+    loginreducer: state.loginReducer
   }
 }
 function mapDispatchToProps(dispatch) {
