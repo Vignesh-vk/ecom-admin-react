@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../common/authHeaders";
 const LIST_PAYMENT = 'LIST_PAYMENT';
 const ADD_PAYMENT = 'ADD_PAYMENT';
 const DELETE_PAYMENT='DELETE_PAYMENT';
@@ -7,7 +8,7 @@ const UPDATE_PAYMENT='UPDATE_PAYMENT'
 export function AC_ADD_PAYMENT(userData) {
     console.log('======Add PAYMENT=========', userData)
     return function (dispatch) {
-        return axios.post("http://localhost:8000/api/v1/payments/addUpdatePayment", userData)
+        return axios.post("http://localhost:8000/api/v1/payments/addUpdatePayment", userData,config)
             .then(({ data }) => {
                 dispatch({ type: ADD_PAYMENT, payload: data })
             });
@@ -16,7 +17,7 @@ export function AC_ADD_PAYMENT(userData) {
 
 export function AC_LIST_PAYMENT() {
     return function (dispatch) {
-        return axios.get("http://localhost:8000/api/v1/payments/listPayments")
+        return axios.get("http://localhost:8000/api/v1/payments/listPayments",config)
             .then(({ data }) => {
                 console.log('=======List PAYMENT========', data)
                 dispatch({ type: LIST_PAYMENT, payload: data })
@@ -26,7 +27,7 @@ export function AC_LIST_PAYMENT() {
 export function AC_DELETE_PAYMENT(formdata){
     console.log('===-=-=action -=-=-',formdata)
     return function(dispatch){
-        return axios.post("http://localhost:8000/api/v1/payments/deletePayment",formdata)
+        return axios.post("http://localhost:8000/api/v1/payments/deletePayment",formdata,config)
         .then(({data}) => {
            
             dispatch({type:DELETE_PAYMENT,payload:data})
@@ -36,7 +37,7 @@ export function AC_DELETE_PAYMENT(formdata){
 export function AC_VIEW_PAYMENT(formdata){
     console.log('===-=-=action -=-=-',formdata)
     return function(dispatch){
-        return axios.post("http://localhost:8000/api/v1/payments/viewPayment",formdata)
+        return axios.post("http://localhost:8000/api/v1/payments/viewPayment",formdata,config)
         .then(({data}) => {
             dispatch({type:VIEW_PAYMENT,payload:data})
         });

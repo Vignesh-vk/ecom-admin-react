@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../common/authHeaders";
 const LIST_NEWSLETTER = 'LIST_NEWSLETTER';
 const ADD_NEWSLETTER = 'ADD_NEWSLETTER';
 const DELETE_NEWSLETTER='DELETE_NEWSLETTER';
@@ -7,7 +8,7 @@ const UPDATE_NEWSLETTER='UPDATE_NEWSLETTER'
 export function AC_ADD_NEWSLETTER(userData) {
     console.log('======Add NEWSLETTER=========', userData)
     return function (dispatch) {
-        return axios.post("http://localhost:8000/api/v1/newsletters/addUpdatenewsletter", userData)
+        return axios.post("http://localhost:8000/api/v1/newsletters/addUpdatenewsletter", userData,config)
             .then(({ data }) => {
                 dispatch({ type: ADD_NEWSLETTER, payload: data })
             });
@@ -16,7 +17,7 @@ export function AC_ADD_NEWSLETTER(userData) {
 
 export function AC_LIST_NEWSLETTER() {
     return function (dispatch) {
-        return axios.get("http://localhost:8000/api/v1/newsletters/listnewsletter")
+        return axios.get("http://localhost:8000/api/v1/newsletters/listnewsletter",config)
             .then(({ data }) => {
                 console.log('=======List NEWSLETTER========', data)
                 dispatch({ type: LIST_NEWSLETTER, payload: data })
@@ -26,7 +27,7 @@ export function AC_LIST_NEWSLETTER() {
 export function AC_DELETE_NEWSLETTER(formdata){
     console.log('===-=-=action -=-=-',formdata)
     return function(dispatch){
-        return axios.post("http://localhost:8000/api/v1/newsletters/deletenewsletter",formdata)
+        return axios.post("http://localhost:8000/api/v1/newsletters/deletenewsletter",formdata,config)
         .then(({data}) => {
            
             dispatch({type:DELETE_NEWSLETTER,payload:data})
@@ -36,7 +37,7 @@ export function AC_DELETE_NEWSLETTER(formdata){
 export function AC_VIEW_NEWSLETTER(formdata){
     console.log('===-=-=action -=-=-',formdata)
     return function(dispatch){
-        return axios.post("http://localhost:8000/api/v1/newsletters/viewnewsletter",formdata)
+        return axios.post("http://localhost:8000/api/v1/newsletters/viewnewsletter",formdata,config)
         .then(({data}) => {
             dispatch({type:VIEW_NEWSLETTER,payload:data})
         });

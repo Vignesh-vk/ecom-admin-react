@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../common/authHeaders";
 const LIST_COUNTRY = 'LIST_COUNTRY';
 const ADD_COUNTRY = 'ADD_COUNTRY';
 const DELETE_COUNTRY='DELETE_COUNTRY';
@@ -7,7 +8,7 @@ const UPDATE_COUNTRY='UPDATE_COUNTRY'
 export function AC_ADD_COUNTRY(userData) {
     console.log('======Add COUNTRY=========', userData)
     return function (dispatch) {
-        return axios.post("http://localhost:8000/api/v1/countries/addUpdateCountry", userData)
+        return axios.post("http://localhost:8000/api/v1/countries/addUpdateCountry", userData,config)
             .then(({ data }) => {
                 dispatch({ type: ADD_COUNTRY, payload: data })
             });
@@ -16,7 +17,7 @@ export function AC_ADD_COUNTRY(userData) {
 
 export function AC_LIST_COUNTRY() {
     return function (dispatch) {
-        return axios.get("http://localhost:8000/api/v1/countries/listCountries")
+        return axios.get("http://localhost:8000/api/v1/countries/listCountries",config)
             .then(({ data }) => {
                 console.log('=======List COUNTRY========', data)
                 dispatch({ type: LIST_COUNTRY, payload: data })
@@ -26,7 +27,7 @@ export function AC_LIST_COUNTRY() {
 export function AC_DELETE_COUNTRY(formdata){
     console.log('===-=-=action -=-=-',formdata)
     return function(dispatch){
-        return axios.post("http://localhost:8000/api/v1/countries/deleteCountry",formdata)
+        return axios.post("http://localhost:8000/api/v1/countries/deleteCountry",formdata,config)
         .then(({data}) => {
            
             dispatch({type:DELETE_COUNTRY,payload:data})
@@ -36,7 +37,7 @@ export function AC_DELETE_COUNTRY(formdata){
 export function AC_VIEW_COUNTRY(formdata){
     console.log('===-=-=action -=-=-',formdata)
     return function(dispatch){
-        return axios.post("http://localhost:8000/api/v1/countries/viewCountry",formdata)
+        return axios.post("http://localhost:8000/api/v1/countries/viewCountry",formdata,config)
         .then(({data}) => {
             dispatch({type:VIEW_COUNTRY,payload:data})
         });

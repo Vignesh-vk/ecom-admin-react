@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../common/authHeaders";
 const LIST_LANGUAGE = 'LIST_LANGUAGE';
 const ADD_LANGUAGE = 'ADD_LANGUAGE';
 const DELETE_LANGUAGE='DELETE_LANGUAGE';
@@ -7,7 +8,7 @@ const UPDATE_LANGUAGE='UPDATE_LANGUAGE'
 export function AC_ADD_LANGUAGE(userData) {
     console.log('======Add Language=========', userData)
     return function (dispatch) {
-        return axios.post("http://localhost:8000/api/v1/languages/addUpdateLanguages", userData)
+        return axios.post("http://localhost:8000/api/v1/languages/addUpdateLanguages", userData,config)
             .then(({ data }) => {
                 dispatch({ type: ADD_LANGUAGE, payload: data })
             });
@@ -16,7 +17,7 @@ export function AC_ADD_LANGUAGE(userData) {
 
 export function AC_LIST_LANGUAGE() {
     return function (dispatch) {
-        return axios.get("http://localhost:8000/api/v1/languages/listLanguages")
+        return axios.get("http://localhost:8000/api/v1/languages/listLanguages",config)
             .then(({ data }) => {
                 console.log('=======List LANGUAGE========', data)
                 dispatch({ type: LIST_LANGUAGE, payload: data })
@@ -26,7 +27,7 @@ export function AC_LIST_LANGUAGE() {
 export function AC_DELETE_LANGUAGE(formdata){
     console.log('===-=-=action -=-=-',formdata)
     return function(dispatch){
-        return axios.post("http://localhost:8000/api/v1/languages/deleteLanguage",formdata)
+        return axios.post("http://localhost:8000/api/v1/languages/deleteLanguage",formdata,config)
         .then(({data}) => {
            
             dispatch({type:DELETE_LANGUAGE,payload:data})
@@ -36,7 +37,7 @@ export function AC_DELETE_LANGUAGE(formdata){
 export function AC_VIEW_LANGUAGE(formdata){
     console.log('===-=-=action -=-=-',formdata)
     return function(dispatch){
-        return axios.post("http://localhost:8000/api/v1/languages/viewLanguages",formdata)
+        return axios.post("http://localhost:8000/api/v1/languages/viewLanguages",formdata,config)
         .then(({data}) => {
             dispatch({type:VIEW_LANGUAGE,payload:data})
         });
