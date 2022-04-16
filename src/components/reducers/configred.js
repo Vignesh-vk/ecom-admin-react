@@ -1,53 +1,73 @@
-const initialState = {
-    configList: [],
-    configAdd: [],
-    configDelete:[],
-    configInfo:{
-      name:'',
-      slug:'',
-      description:'',
-      status:''
-    }
+const initialState={
+  configurationList : [],
+  configurationAdd : [],
+  configurationEdit:[],
+  configurationDelete:[],
+  configurationDeletes:[],
+  configurationInfo:{
+      name : '',
+      slug : '',
+      description : '',
+      status:'',
+      id : ''
   }
-  function CONFIGURATION_Reducer(state = initialState, action) {
-    console.log("-=-=-=Reducer=-=-=", action)
-    switch (action.type) {
+}
+function Configuration_Reducer(state=initialState,action){
+  switch(action.type){
       case 'LIST_CONFIGURATION':
-        return {
-          ...state,
-          configList: action.payload.data
-        };
-      case 'ADD_CONFIGURATION':
-        return {
-          ...state,
-          configAdd: action.payload
-        };
-      case 'DELETE_CONFIGURATION':
-        return {
-          ...state,
-          configDelete: action.payload
-  
-        };
-        break;
-        case 'VIEW_CONFIGURATION':
-          return {
-            ...state,
-            configInfo: action.payload
+          return{
+              ...state,
+              configurationList:action.payload.data
+              
           };
-        case 'EDIT_CONFIGURATION':
-          return {
-            ...state,
-            editConfig: action.payload
-          }
           break;
-        case 'UPDATE_CONFIGURATION':
-          return Object.assign({},state,{
-            configInfo : {
-              ...state.configInfo,
-              [action.name] : action.value
-            }
-          })
-      default: return state;
-    }
+          case 'EDIT_CONFIGURATION':
+              return{
+                  ...state,
+                  configurationEdit:action.payload
+                  
+              };
+          case 'ADD_CONFIGURATION':
+              return{
+                  ...state,
+                  configurationAdd:action.payload
+                  
+              };
+              break;
+          case 'DELETE_CONFIGURATION':
+                  return{
+                      ...state,
+                      configurationDelete:action.payload
+                      
+                  };
+                  break;
+          case 'DELETES_CONFIGURATION':
+          return{
+              ...state,
+              configurationDeletes:action.payload
+              
+          };
+          break;
+          case 'VIEW_CONFIGURATION':
+              
+              return{
+                  
+                  ...state,
+                  configurationInfo:action.payload
+              };
+
+              
+          case 'UPDATE_CONFIGURATION_DATA':
+                      return Object.assign({},state, {
+                          configurationInfo : {
+                              ...state.configurationInfo,
+                              [action.name] : action.value
+                          }
+                      })        
+      
+                  default:return state;
+                  break;          
+          
   }
-  export default CONFIGURATION_Reducer;
+}
+export default  Configuration_Reducer

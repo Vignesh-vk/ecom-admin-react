@@ -8,8 +8,10 @@ export function AC_LOGIN(formData) {
                 if(data.status==1){
                     localStorage.setItem("token",data.token)
                     window.location="/"
+                    swal("Good job!", "Logged In Successfully!", "success");
                     dispatch({type:CHECK_LOGIN, payload:data});
                 }else{
+                    swal("Oops!",data.message,"error");
                     dispatch({type:CHECK_LOGIN, payload:data});
                 }
             });
